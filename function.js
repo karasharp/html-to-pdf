@@ -1,4 +1,4 @@
-window.function = function(html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions) {
+window.function = function(html, webhook, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions) {
   // FIDELITY MAPPING
   const fidelityMap = {
     low: 1,
