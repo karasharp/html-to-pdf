@@ -144,26 +144,27 @@ window.function = function(html, webhook, fileName, format, zoom, orientation, m
     </div>
     <script>
    document.getElementById('webhook').addEventListener('click', function() {
-  var element = document.getElementById('content');
-  var button = this;
-  button.innerText = 'Sending...';
-  button.className = 'downloading';
+       alert("hello from webhook");
+      var element = document.getElementById('content');
+      var button = this;
+      button.innerText = 'Sending...';
+      button.className = 'downloading';
 
-  var opt = {
-    pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-    margin: ${margin},
-    filename: '${fileName}',
-    html2canvas: {
-      useCORS: true,
-      scale: ${quality}
-    },
-    jsPDF: {
-      unit: 'px',
-      orientation: '${orientation}',
-      format: [${finalDimensions}],
-      hotfixes: ['px_scaling']
-    }
-  };
+      var opt = {
+        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+        margin: ${margin},
+        filename: '${fileName}',
+        html2canvas: {
+          useCORS: true,
+          scale: ${quality}
+        },
+        jsPDF: {
+          unit: 'px',
+          orientation: '${orientation}',
+          format: [${finalDimensions}],
+          hotfixes: ['px_scaling']
+        }
+      };
   
   html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
     var reader = new FileReader();
