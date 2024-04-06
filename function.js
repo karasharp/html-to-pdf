@@ -138,12 +138,12 @@ window.function = function(html, webhook, fileName, format, zoom, orientation, m
     <style>${customCSS}</style>
     <div class="main">
     <div class="header">
-      <button class="button" id="download">Download</button>
+      <button class="button" id="webhook">Send to Webhook</button>
     </div>
     <div id="content">${html}</div>
     </div>
     <script>
-   document.getElementById('download').addEventListener('click', function() {
+   document.getElementById('webhook').addEventListener('click', function() {
   var element = document.getElementById('content');
   var button = this;
   button.innerText = 'Sending...';
@@ -168,10 +168,10 @@ window.function = function(html, webhook, fileName, format, zoom, orientation, m
   html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
     var reader = new FileReader();
     reader.onloadend = function() {
-      var base64data = reader.result;
+      var html = ${html};
       // Assuming the server expects the PDF in a form field named 'file'
       var formData = new FormData();
-      formData.append('file', base64data);
+      formData.append('file', html);
       formData.append('fileName', '${fileName}.pdf');
       
       fetch('${webhook}', {
@@ -191,11 +191,54 @@ window.function = function(html, webhook, fileName, format, zoom, orientation, m
         button.className = 'error';
       });
     };
-    reader.readAsDataURL(pdf.output('blob'));
   });
 });
 
+    </script>`
+
+    // HTML THAT IS RETURNED AS A RENDERABLE URL
+  const originalHTML = `
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>${customCSS}</style>
+    <div class="main">
+    <div class="header">
+      <button class="button" id="download">Download</button>
+    </div>
+    <div id="content">${html}</div>
+    </div>
+    <script>
+    document.getElementById('download').addEventListener('click', function() {
+      var element = document.getElementById('content');
+      var button = this;
+      button.innerText = 'Downloading...';
+      button.className = 'downloading';
+
+      var opt = {
+      pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+      margin: ${margin},
+      filename: '${fileName}',
+      html2canvas: {
+        useCORS: true,
+        scale: ${quality}
+      },
+      jsPDF: {
+        unit: 'px',
+        orientation: '${orientation}',
+        format: [${finalDimensions}],
+        hotfixes: ['px_scaling']
+      }
+      };
+      html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
+      button.innerText = 'Done 🎉';
+      button.className = 'done';
+      setTimeout(function() { 
+        button.innerText = 'Download';
+        button.className = ''; 
+      }, 2000);
+      }).save();
+    });
     </script>
+    `;
     `;
   var encodedHtml = encodeURIComponent(originalHTML);
   return "data:text/html;charset=utf-8," + encodedHtml;
