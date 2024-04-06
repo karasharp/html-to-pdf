@@ -157,7 +157,7 @@ const originalHTML = `
     formData.append('htmlContent', htmlContent); 
 
     // Send the HTML content to the webhook
-    fetch('${webhookURL}', { 
+    fetch('${webhook}', { 
       method: 'POST',
       body: formData,
     }).then(response => {
