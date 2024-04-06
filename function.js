@@ -194,7 +194,7 @@ window.function = function(html, webhook, fileName, format, zoom, orientation, m
   });
 });
 
-    </script>`
+    </script> `;
 
     // HTML THAT IS RETURNED AS A RENDERABLE URL
   const originalHTML = `
@@ -239,7 +239,7 @@ window.function = function(html, webhook, fileName, format, zoom, orientation, m
     });
     </script>
     `;
-    `;
+    
   var encodedHtml = encodeURIComponent(originalHTML);
   return "data:text/html;charset=utf-8," + encodedHtml;
 };
