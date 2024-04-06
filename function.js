@@ -133,7 +133,7 @@ window.function = function(html, webhook, fileName, format, zoom, orientation, m
   `
 
   // HTML THAT IS RETURNED AS A RENDERABLE URL
-  const originalHTML = `
+  const originalHTMLWEBHOOK = `
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>${customCSS}</style>
     <div class="main">
