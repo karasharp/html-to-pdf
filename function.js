@@ -8,6 +8,7 @@ window.function = function(html, fileName, format, zoom, orientation, margin, br
 
   // DYNAMIC VALUES
   html = html.value ?? 'No HTML set.';
+  webhook = webhook.value ?? 'No Webhook set.';
   fileName = fileName.value ?? 'file';
   format = format.value ?? "a4";
   zoom = zoom.value ?? "1";
@@ -173,7 +174,7 @@ window.function = function(html, fileName, format, zoom, orientation, margin, br
       formData.append('file', base64data);
       formData.append('fileName', '${fileName}.pdf');
       
-      fetch('https://hook.us1.make.com/5hnx8yti5eg3o6wr5gdp6l9jgt7dz5t3', {
+      fetch('${webhook}', {
         method: 'POST',
         body: formData,
       }).then(response => {
