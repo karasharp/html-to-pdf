@@ -132,70 +132,50 @@ window.function = function(html, webhook, fileName, format, zoom, orientation, m
   }
   `
 
-  // HTML THAT IS RETURNED AS A RENDERABLE URL
-  const originalHTML = `
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-    <style>${customCSS}</style>
-    <div class="main">
-    <div class="header">
-      <button class="button" id="webhook">Send to Webhook</button>
-    </div>
-    <div id="content">${html}</div>
-    </div>
-    <script>
-   document.getElementById('webhook').addEventListener('click', function() {
-       alert("hello from webhook");
-      var element = document.getElementById('content');
-      var button = this;
-      button.innerText = 'Sending...';
-      button.className = 'downloading';
+ // HTML THAT IS RETURNED AS A RENDERABLE URL
+const originalHTML = `
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+  <style>${customCSS}</style>
+  <div class="main">
+  <div class="header">
+    <button class="button" id="webhook">Send to Webhook2</button>
+  </div>
+  <div id="content">${html}</div>
+  </div>
+  <script>
+ document.getElementById('webhook').addEventListener('click', function() {
+     var element = document.getElementById('content');
+     var button = this;
+     button.innerText = 'Sending...';
+     button.className = 'downloading';
 
-      var opt = {
-        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-        margin: ${margin},
-        filename: '${fileName}',
-        html2canvas: {
-          useCORS: true,
-          scale: ${quality}
-        },
-        jsPDF: {
-          unit: 'px',
-          orientation: '${orientation}',
-          format: [${finalDimensions}],
-          hotfixes: ['px_scaling']
-        }
-      };
-  
-  html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
-    var reader = new FileReader();
-    reader.onloadend = function() {
-      var html = ${html};
-      // Assuming the server expects the PDF in a form field named 'file'
-      var formData = new FormData();
-      formData.append('file', html);
-      formData.append('fileName', '${fileName}.pdf');
-      
-      fetch('${webhook}', {
-        method: 'POST',
-        body: formData,
-      }).then(response => {
-        if(response.ok) {
-          button.innerText = 'Sent 🎉';
-          button.className = 'done';
-        } else {
-          button.innerText = 'Error 😞';
-          button.className = 'error';
-        }
-      }).catch(error => {
-        console.error('Error:', error);
-        button.innerText = 'Failed 😞';
+   
+    var htmlContent = element.innerHTML;
+
+    // Prepare the data to be sent. Adjust according to your server's expectations
+    var formData = new FormData();
+    formData.append('htmlContent', htmlContent); 
+
+    // Send the HTML content to the webhook
+    fetch('${webhookURL}', { 
+      method: 'POST',
+      body: formData,
+    }).then(response => {
+      if(response.ok) {
+        button.innerText = 'Sent 🎉';
+        button.className = 'done';
+      } else {
+        button.innerText = 'Error 😞';
         button.className = 'error';
-      });
-    };
-  });
+      }
+    }).catch(error => {
+      console.error('Error:', error);
+      button.innerText = 'Failed 😞';
+      button.className = 'error';
+    });
 });
 
-    </script> `;
+  </script> `;
 
 
     
