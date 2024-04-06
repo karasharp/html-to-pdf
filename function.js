@@ -89,7 +89,7 @@ window.function = function(html, webhook, fileName, format, zoom, orientation, m
     margin: 0!important
   }
 
-  button#download {
+  button {
     position: fixed;
     border-radius: 0.5rem;
     font-size: 14px;
@@ -108,7 +108,7 @@ window.function = function(html, webhook, fileName, format, zoom, orientation, m
     z-index:999
   }
 
-  button#download:hover {
+  button:hover {
     background: #f5f5f5;
     box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.06), 0 6px 12px -3px rgba(0, 0, 0, 0.1);
   }
